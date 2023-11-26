@@ -19,7 +19,6 @@ export class CachingService {
       return undefined;
     }
 
-    // 👇 Remove the entry if expired
     const hasExpired = new Date().getTime() >= cached.expiresOn;
     if (hasExpired) {
       this.#cache.delete(key);
@@ -33,7 +32,6 @@ export class CachingService {
     if (key.includes("album")) {
       this.#cache.set(key, {
         value,
-        // 👇 Set its lifespan
         expiresOn: new Date().getTime() + TTL,
       });
     }
