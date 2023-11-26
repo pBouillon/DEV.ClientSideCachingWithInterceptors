@@ -4,15 +4,18 @@ import {
   HttpInterceptorFn,
   HttpRequest,
 } from "@angular/common/http";
+import { inject } from "@angular/core";
 
 import { Observable, of, tap } from "rxjs";
 
-const cache = new Map<string, HttpEvent<unknown>>();
+import { CachingService } from "./caching.service";
 
 export const cachingInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
+  const cache = inject(CachingService);
+
   const cached = cache.get(req.url);
 
   const isCacheHit = cached !== undefined;
